@@ -3,68 +3,182 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>E-Ink Converter</title>
+    <title>Square E-Card Studio | Four-Color E-Ink Badge Converter</title>
+    <meta
+      name="description"
+      content="Square E-Card Studio turns your artwork into crisp four-color e-ink visuals that look perfect on modern credential displays. Upload, preview, and download badge-ready assets in seconds."
+    />
+    <meta
+      name="keywords"
+      content="e-ink badge converter, square e-card, employee credential display, four color palette, e-ink image processing"
+    />
+    <meta name="author" content="Square E-Card Studio" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#2141b2" />
+    <link rel="canonical" href="{{ url_for('index', _external=True) }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Square E-Card Studio" />
+    <meta property="og:title" content="Square E-Card Studio | Four-Color E-Ink Badge Converter" />
+    <meta
+      property="og:description"
+      content="Upload your credential artwork and get a Square display-ready four-color e-ink conversion with instant previews."
+    />
+    <meta property="og:url" content="{{ url_for('index', _external=True) }}" />
+    <meta property="og:image" content="{{ url_for('static', filename='images/square-badge.png', _external=True) }}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Square E-Card Studio | Four-Color E-Ink Badge Converter" />
+    <meta
+      name="twitter:description"
+      content="Transform identity artwork into polished four-color e-ink visuals tailored for Square digital credentials."
+    />
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/square-badge.png', _external=True) }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Square E-Card Studio",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "description": "Convert brand artwork into four-color e-ink assets that look brilliant on Square digital credential displays.",
+        "image": {{ url_for('static', filename='images/square-badge.png', _external=True)|tojson }},
+        "url": {{ url_for('index', _external=True)|tojson }},
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
   </head>
   <body>
-    <main class="container">
-      <section class="panel">
-        <h1>4-Color E-Ink Converter</h1>
-        <p class="lede">
-          Upload an image to convert it using your custom four-color palette.
-        </p>
-        <form class="upload" method="post" enctype="multipart/form-data">
-          <label class="file-input">
-            <span id="file-label">Select an image</span>
-            <input id="image-input" type="file" name="image" accept="image/*" required />
-          </label>
-          <button type="submit">Convert Image</button>
-        </form>
-
-        <div id="preview" class="preview" hidden>
-          <div class="preview-meta">
-            <span id="preview-name"></span>
-            <span id="preview-size"></span>
+    <main class="page">
+      <header class="hero">
+        <div class="brand-identity">
+          <div class="brand-mark" role="img" aria-label="Square e-ink badge with vivid digital display">
+            <img
+              src="{{ url_for('static', filename='images/square-badge.png') }}"
+              alt="Square e-ink badge display"
+              loading="lazy"
+            />
           </div>
-          <img id="preview-image" alt="Image preview" />
+          <div class="brand-copy">
+            <p class="brand-overline">Square E-Card Studio</p>
+            <h1>Modernize your credentials with four-color e-ink visuals</h1>
+          </div>
         </div>
-
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class="notice">
-          {% for message in messages %}
-          <li>{{ message }}</li>
-          {% endfor %}
+        <p class="lede">
+          Craft badge-ready graphics tailored for Square's vibrant e-ink displays. Upload your design, preview the palette-aware
+          output, and deliver consistent credentials across your organization.
+        </p>
+        <ul class="benefits">
+          <li>Smart remapping to your custom four-color palette</li>
+          <li>Shareable previews for quick stakeholder sign-off</li>
+          <li>Optimized assets for Square professional badge hardware</li>
         </ul>
-        {% endif %}
-        {% endwith %}
+      </header>
 
-        {% if download_filename %}
-        <div class="result">
-          <h2>Your converted image is ready.</h2>
-          <a class="download" href="{{ url_for('download', filename=download_filename) }}">
-            Download
-          </a>
+      <div class="content-grid">
+        <section class="panel convert-panel">
+          <h2>Generate a display-ready render</h2>
+          <p class="supporting">
+            Upload PNG, JPG, GIF, BMP, or WEBP artwork and we'll instantly remap it for four-color e-ink output while keeping your
+            gradients crisp.
+          </p>
+          <form class="upload" method="post" enctype="multipart/form-data">
+            <label class="file-input">
+              <span id="file-label">Select an image</span>
+              <input id="image-input" type="file" name="image" accept="image/*" required />
+            </label>
+            <button type="submit">Convert Image</button>
+          </form>
 
-          {% if original_preview and converted_preview %}
-          <div class="comparison">
-            <figure>
-              <div class="comparison-frame">
-                <img src="{{ url_for('uploaded_preview', filename=original_preview) }}" alt="Original upload preview" />
-              </div>
-              <figcaption>Original</figcaption>
-            </figure>
-            <figure>
-              <div class="comparison-frame">
-                <img src="{{ url_for('converted_preview_file', filename=converted_preview) }}" alt="Converted image preview" />
-              </div>
-              <figcaption>Converted</figcaption>
-            </figure>
+          <div id="preview" class="preview" hidden>
+            <div class="preview-meta">
+              <span id="preview-name"></span>
+              <span id="preview-size"></span>
+            </div>
+            <img id="preview-image" alt="Image preview" />
+          </div>
+
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <ul class="notice">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          {% endwith %}
+
+          {% if download_filename %}
+          <div class="result">
+            <h3>Your converted image is ready</h3>
+            <a class="download" href="{{ url_for('download', filename=download_filename) }}">Download file</a>
+
+            {% if original_preview and converted_preview %}
+            <div class="comparison">
+              <figure>
+                <div class="comparison-frame">
+                  <img
+                    src="{{ url_for('uploaded_preview', filename=original_preview) }}"
+                    alt="Original upload preview"
+                  />
+                </div>
+                <figcaption>Original</figcaption>
+              </figure>
+              <figure>
+                <div class="comparison-frame">
+                  <img
+                    src="{{ url_for('converted_preview_file', filename=converted_preview) }}"
+                    alt="Converted image preview"
+                  />
+                </div>
+                <figcaption>Converted</figcaption>
+              </figure>
+            </div>
+            {% endif %}
           </div>
           {% endif %}
-        </div>
-        {% endif %}
-      </section>
+        </section>
+
+        <aside class="product-spotlight" aria-label="Square badge hardware">
+          <div class="product-frame">
+            <img
+              src="{{ url_for('static', filename='images/square-badge.png') }}"
+              alt="Square digital employee badge with a full-color e-ink display"
+              loading="lazy"
+            />
+          </div>
+          <div class="product-copy">
+            <h2>Showcase on Square displays</h2>
+            <p>
+              Bring your credential artwork to life on Square's connected badge hardware. Precise palette calibration ensures
+              every badge looks sharp in meeting rooms, at events, or on-site entrances.
+            </p>
+            <dl class="product-specs">
+              <div>
+                <dt>Display</dt>
+                <dd>4-color e-ink, 3.7" square aspect</dd>
+              </div>
+              <div>
+                <dt>Ideal use</dt>
+                <dd>Employee IDs, guest passes, conference credentials</dd>
+              </div>
+              <div>
+                <dt>Deliverable</dt>
+                <dd>High-quality JPG optimized for instant syncing</dd>
+              </div>
+            </dl>
+          </div>
+        </aside>
+      </div>
     </main>
     <script>
       const input = document.getElementById("image-input");

@@ -1,13 +1,17 @@
 :root {
   color-scheme: light;
-  --bg: #fbfbf7;
-  --fg: #181820;
-  --accent: #5b7cfa;
-  --accent-strong: #2f4dd0;
+  --bg: #f4f7ff;
+  --fg: #10152a;
+  --fg-muted: rgba(16, 21, 42, 0.72);
+  --accent: #2141b2;
+  --accent-strong: #162a7c;
+  --accent-soft: #e2e7ff;
   --panel: #ffffff;
-  --border: rgba(24, 24, 32, 0.08);
-  --shadow: 0 24px 48px rgba(16, 22, 40, 0.08);
-  font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --panel-alt: linear-gradient(140deg, #ffffff, #eef2ff);
+  --border: rgba(16, 21, 42, 0.08);
+  --shadow: 0 24px 64px rgba(20, 32, 70, 0.12);
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  line-height: 1.6;
 }
 
 * {
@@ -17,36 +21,62 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at top, rgba(91, 124, 250, 0.12), transparent 55%),
-    linear-gradient(135deg, var(--bg), #f1f0ea);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(62, 104, 246, 0.18), transparent 52%),
+    radial-gradient(circle at 88% 20%, rgba(255, 199, 119, 0.18), transparent 55%),
+    linear-gradient(180deg, var(--bg), #ffffff 68%);
   color: var(--fg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1rem;
+  padding: 3.25rem 1.5rem 4rem;
 }
 
-.container {
-  width: min(640px, 100%);
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: grid;
+  gap: 3.5rem;
 }
 
 .panel {
+  position: relative;
+  isolation: isolate;
   background: var(--panel);
-  padding: 2.5rem;
-  border-radius: 24px;
+  padding: clamp(2rem, 2vw + 1.4rem, 2.85rem);
+  border-radius: 28px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Clash Display", "Space Grotesk", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  margin: 0;
 }
 
 h1 {
-  margin: 0 0 0.75rem;
-  font-size: clamp(1.75rem, 2vw + 1rem, 2.5rem);
+  font-size: clamp(2.35rem, 2.5vw + 1.5rem, 3.4rem);
+  line-height: 1.05;
+}
+
+h2 {
+  font-size: clamp(1.6rem, 1.5vw + 1.1rem, 2.2rem);
+  line-height: 1.18;
+}
+
+h3 {
+  font-size: clamp(1.25rem, 1vw + 1rem, 1.6rem);
+  line-height: 1.2;
 }
 
 .lede {
-  margin: 0 0 2rem;
-  color: rgba(24, 24, 32, 0.72);
-  font-size: 1.05rem;
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: 1.12rem;
+  max-width: 54ch;
 }
 
 .upload {
@@ -56,6 +86,165 @@ h1 {
   align-items: center;
 }
 
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 2.25rem;
+  align-items: stretch;
+}
+
+.convert-panel {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.convert-panel::before {
+  content: "";
+  position: absolute;
+  top: -45%;
+  left: -25%;
+  width: 70%;
+  height: 130%;
+  background: radial-gradient(circle, rgba(33, 65, 178, 0.18), transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.supporting {
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: 1rem;
+}
+
+.product-spotlight {
+  background: var(--panel-alt);
+  padding: clamp(2rem, 2vw + 1.25rem, 2.6rem);
+  border-radius: 32px;
+  border: 1px solid rgba(33, 65, 178, 0.12);
+  box-shadow: 0 24px 48px rgba(25, 38, 88, 0.08);
+  display: grid;
+  gap: 1.75rem;
+  align-content: start;
+}
+
+.product-frame {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 26px;
+  padding: 1.5rem;
+  box-shadow: inset 0 0 0 1px rgba(33, 65, 178, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-frame img {
+  width: 100%;
+  max-width: 360px;
+  object-fit: contain;
+}
+
+.product-copy {
+  display: grid;
+  gap: 1rem;
+  color: var(--fg-muted);
+}
+
+.product-copy h2 {
+  color: var(--fg);
+}
+
+.product-specs {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+  color: var(--fg);
+}
+
+.product-specs div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.product-specs dt {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(33, 65, 178, 0.8);
+}
+
+.product-specs dd {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--fg);
+}
+
+.hero {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.brand-identity {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.brand-mark {
+  width: 92px;
+  height: 92px;
+  border-radius: 24px;
+  background: var(--accent-soft);
+  border: 1px solid rgba(33, 65, 178, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(33, 65, 178, 0.08);
+}
+
+.brand-mark img {
+  width: 110%;
+  height: 110%;
+  object-fit: cover;
+}
+
+.brand-overline {
+  font-size: 0.95rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(33, 65, 178, 0.75);
+  margin: 0 0 0.4rem;
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.benefits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.benefits li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(33, 65, 178, 0.12);
+  color: var(--fg);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
 .file-input {
   position: relative;
   display: inline-flex;
@@ -63,15 +252,19 @@ h1 {
   justify-content: center;
   padding: 0.9rem 1.4rem;
   border-radius: 16px;
-  background: rgba(91, 124, 250, 0.08);
+  background: rgba(33, 65, 178, 0.12);
   color: var(--accent-strong);
   font-weight: 600;
   cursor: pointer;
-  transition: background 160ms ease;
+  transition: background 160ms ease, box-shadow 160ms ease;
 }
 
 .file-input:hover {
-  background: rgba(91, 124, 250, 0.16);
+  background: rgba(33, 65, 178, 0.2);
+}
+
+.file-input:focus-within {
+  box-shadow: 0 0 0 3px rgba(33, 65, 178, 0.25);
 }
 
 .file-input input {
@@ -90,20 +283,28 @@ button {
   font-weight: 600;
   letter-spacing: 0.01em;
   cursor: pointer;
-  transition: transform 160ms ease, background 160ms ease;
+  box-shadow: 0 14px 28px rgba(33, 65, 178, 0.18);
+  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
 }
 
 button:hover {
   background: var(--accent-strong);
   transform: translateY(-1px);
+  box-shadow: 0 18px 32px rgba(22, 42, 124, 0.22);
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(33, 65, 178, 0.45);
+  outline-offset: 3px;
 }
 
 .notice {
   margin: 2rem 0 0;
   padding: 0.75rem 1rem;
   border-radius: 12px;
-  background: rgba(230, 82, 55, 0.08);
-  color: #b1372a;
+  background: rgba(214, 71, 56, 0.1);
+  color: #8d2a1f;
+  border: 1px solid rgba(214, 71, 56, 0.18);
   list-style: none;
 }
 
@@ -115,8 +316,8 @@ button:hover {
   margin-top: 2rem;
   padding: 1.5rem;
   border-radius: 20px;
-  border: 1px solid rgba(24, 24, 32, 0.08);
-  background: rgba(91, 124, 250, 0.06);
+  border: 1px solid rgba(33, 65, 178, 0.15);
+  background: rgba(33, 65, 178, 0.08);
   display: grid;
   gap: 1rem;
 }
@@ -129,7 +330,7 @@ button:hover {
   display: flex;
   gap: 0.75rem;
   font-size: 0.95rem;
-  color: rgba(24, 24, 32, 0.7);
+  color: var(--fg-muted);
   flex-wrap: wrap;
 }
 
@@ -139,7 +340,7 @@ button:hover {
   object-fit: contain;
   border-radius: 16px;
   background: white;
-  box-shadow: inset 0 0 0 1px rgba(24, 24, 32, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(33, 65, 178, 0.1);
 }
 
 .result {
@@ -166,7 +367,7 @@ button:hover {
   border-radius: 20px;
   padding: 1rem;
   background: white;
-  box-shadow: inset 0 0 0 1px rgba(24, 24, 32, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(33, 65, 178, 0.08);
   min-height: 220px;
   display: flex;
   align-items: center;
@@ -183,7 +384,7 @@ button:hover {
 .comparison figcaption {
   font-size: 0.95rem;
   font-weight: 600;
-  color: rgba(24, 24, 32, 0.7);
+  color: var(--fg-muted);
 }
 
 .download {
@@ -204,11 +405,45 @@ button:hover {
   transform: translateY(-1px);
 }
 
-@media (max-width: 600px) {
-  .panel {
-    padding: 2rem 1.5rem;
+@media (max-width: 1024px) {
+  .page {
+    gap: 3rem;
   }
 
+  .content-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 2.5rem 1.25rem 3rem;
+  }
+
+  .brand-identity {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand-mark {
+    width: 78px;
+    height: 78px;
+  }
+
+  .benefits {
+    gap: 0.6rem;
+  }
+
+  .panel {
+    padding: clamp(1.8rem, 4vw, 2.3rem);
+  }
+
+  .product-spotlight {
+    padding: clamp(1.6rem, 4vw, 2.1rem);
+  }
+}
+
+@media (max-width: 640px) {
   .upload {
     flex-direction: column;
     align-items: stretch;
@@ -218,5 +453,9 @@ button:hover {
   .file-input {
     width: 100%;
     justify-content: center;
+  }
+
+  .preview {
+    margin-top: 1.5rem;
   }
 }
