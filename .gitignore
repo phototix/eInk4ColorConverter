@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+flask.log
+uploads/
+converted/
+nohup.out

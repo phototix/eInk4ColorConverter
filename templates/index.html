@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>E-Ink Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <main class="container">
+      <section class="panel">
+        <h1>4-Color E-Ink Converter</h1>
+        <p class="lede">
+          Upload an image to convert it using your custom four-color palette.
+        </p>
+        <form class="upload" method="post" enctype="multipart/form-data">
+          <label class="file-input">
+            <span id="file-label">Select an image</span>
+            <input id="image-input" type="file" name="image" accept="image/*" required />
+          </label>
+          <button type="submit">Convert Image</button>
+        </form>
+
+        <div id="preview" class="preview" hidden>
+          <div class="preview-meta">
+            <span id="preview-name"></span>
+            <span id="preview-size"></span>
+          </div>
+          <img id="preview-image" alt="Image preview" />
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="notice">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        {% if download_filename %}
+        <div class="result">
+          <h2>Your converted image is ready.</h2>
+          <a class="download" href="{{ url_for('download', filename=download_filename) }}">
+            Download
+          </a>
+
+          {% if original_preview and converted_preview %}
+          <div class="comparison">
+            <figure>
+              <div class="comparison-frame">
+                <img src="{{ url_for('uploaded_preview', filename=original_preview) }}" alt="Original upload preview" />
+              </div>
+              <figcaption>Original</figcaption>
+            </figure>
+            <figure>
+              <div class="comparison-frame">
+                <img src="{{ url_for('converted_preview_file', filename=converted_preview) }}" alt="Converted image preview" />
+              </div>
+              <figcaption>Converted</figcaption>
+            </figure>
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+      </section>
+    </main>
+    <script>
+      const input = document.getElementById("image-input");
+      const preview = document.getElementById("preview");
+      const previewImage = document.getElementById("preview-image");
+      const previewName = document.getElementById("preview-name");
+      const previewSize = document.getElementById("preview-size");
+      const label = document.getElementById("file-label");
+
+      input.addEventListener("change", () => {
+        const file = input.files?.[0];
+        if (!file) {
+          preview.hidden = true;
+          label.textContent = "Select an image";
+          previewImage.src = "";
+          previewName.textContent = "";
+          previewSize.textContent = "";
+          return;
+        }
+
+        label.textContent = "Change image";
+        previewName.textContent = file.name;
+        previewSize.textContent = `${Math.round(file.size / 1024)} KB`;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          previewImage.src = event.target?.result ?? "";
+          preview.hidden = false;
+        };
+        reader.readAsDataURL(file);
+      });
+    </script>
+  </body>
+</html>
