@@ -47,6 +47,11 @@ body {
   overflow: hidden;
 }
 
+.panel-highlight {
+  box-shadow: 0 0 0 4px rgba(33, 65, 178, 0.2), var(--shadow);
+  transition: box-shadow 240ms ease;
+}
+
 h1,
 h2,
 h3 {
@@ -183,6 +188,59 @@ h3 {
 .hero {
   display: grid;
   gap: 1.75rem;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.primary-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.95rem 1.9rem;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--accent) 0%, #2f5bf5 100%);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  box-shadow: 0 18px 36px rgba(33, 65, 178, 0.22);
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  cursor: pointer;
+}
+
+.primary-action:visited {
+  color: #ffffff;
+}
+
+.primary-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 22px 44px rgba(22, 42, 124, 0.26);
+}
+
+.primary-action:focus-visible {
+  outline: 3px solid rgba(33, 65, 178, 0.45);
+  outline-offset: 4px;
+}
+
+.primary-action:hover .cta-icon {
+  transform: translateX(4px);
+}
+
+.cta-icon {
+  transition: transform 160ms ease;
+  font-size: 1.2rem;
+}
+
+.cta-caption {
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: 0.95rem;
+  max-width: 32ch;
 }
 
 .brand-identity {
@@ -453,6 +511,21 @@ button:focus-visible {
   .file-input {
     width: 100%;
     justify-content: center;
+  }
+
+  .hero-cta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primary-action {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .cta-caption {
+    max-width: none;
   }
 
   .preview {

@@ -82,10 +82,17 @@
           <li>Shareable previews for quick stakeholder sign-off</li>
           <li>Optimized assets for Square professional badge hardware</li>
         </ul>
+        <div class="hero-cta">
+          <a id="start-cta" class="primary-action" href="#upload-panel">
+            Start using the studio
+            <span aria-hidden="true" class="cta-icon">&rarr;</span>
+          </a>
+          <p class="cta-caption">Skip ahead to Select an Image and begin your conversion.</p>
+        </div>
       </header>
 
       <div class="content-grid">
-        <section class="panel convert-panel">
+        <section class="panel convert-panel" id="upload-panel">
           <h2>Generate a display-ready render</h2>
           <p class="supporting">
             Upload PNG, JPG, GIF, BMP, or WEBP artwork and we'll instantly remap it for four-color e-ink output while keeping your
@@ -187,6 +194,20 @@
       const previewName = document.getElementById("preview-name");
       const previewSize = document.getElementById("preview-size");
       const label = document.getElementById("file-label");
+      const uploadPanel = document.getElementById("upload-panel");
+      const cta = document.getElementById("start-cta");
+
+      cta?.addEventListener("click", (event) => {
+        event.preventDefault();
+        uploadPanel?.classList.remove("panel-highlight");
+        uploadPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+        window.requestAnimationFrame(() => {
+          uploadPanel?.classList.add("panel-highlight");
+        });
+        window.setTimeout(() => {
+          uploadPanel?.classList.remove("panel-highlight");
+        }, 1400);
+      });
 
       input.addEventListener("change", () => {
         const file = input.files?.[0];
