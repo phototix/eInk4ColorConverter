@@ -95,12 +95,13 @@ h3 {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
   gap: 2.25rem;
-  align-items: stretch;
+  align-items: start;
 }
 
 .convert-panel {
   display: grid;
   gap: 1.75rem;
+  align-content: start;
 }
 
 .convert-panel::before {

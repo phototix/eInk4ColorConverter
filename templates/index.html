@@ -125,7 +125,7 @@
           {% endwith %}
 
           {% if download_filename %}
-          <div class="result">
+          <div class="result" id="result-panel">
             <h3>Your converted image is ready</h3>
             <a class="download" href="{{ url_for('download', filename=download_filename) }}">Download file</a>
 
@@ -172,7 +172,7 @@
             <dl class="product-specs">
               <div>
                 <dt>Display</dt>
-                <dd>4-color e-ink, 3.7" square aspect</dd>
+                <dd>4-color e-ink</dd>
               </div>
               <div>
                 <dt>Ideal use</dt>
@@ -196,6 +196,7 @@
       const label = document.getElementById("file-label");
       const uploadPanel = document.getElementById("upload-panel");
       const cta = document.getElementById("start-cta");
+      const resultPanel = document.getElementById("result-panel");
 
       cta?.addEventListener("click", (event) => {
         event.preventDefault();
@@ -208,6 +209,16 @@
           uploadPanel?.classList.remove("panel-highlight");
         }, 1400);
       });
+
+      if (resultPanel) {
+        window.requestAnimationFrame(() => {
+          resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+          resultPanel.classList.add("panel-highlight");
+        });
+        window.setTimeout(() => {
+          resultPanel.classList.remove("panel-highlight");
+        }, 1600);
+      }
 
       input.addEventListener("change", () => {
         const file = input.files?.[0];
