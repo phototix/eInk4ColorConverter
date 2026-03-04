@@ -29,6 +29,10 @@ body {
   padding: 3.25rem 1.5rem 4rem;
 }
 
+body.lightbox-open {
+  overflow: hidden;
+}
+
 .page {
   max-width: 1080px;
   margin: 0 auto;
@@ -244,6 +248,36 @@ h3 {
   max-width: 32ch;
 }
 
+.secondary-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 16px;
+  background: rgba(33, 65, 178, 0.12);
+  color: var(--accent-strong);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  text-decoration: none;
+  border: 1px solid rgba(33, 65, 178, 0.18);
+  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease, color 160ms ease;
+}
+
+.secondary-action:visited {
+  color: var(--accent-strong);
+}
+
+.secondary-action:hover {
+  background: rgba(33, 65, 178, 0.18);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px rgba(33, 65, 178, 0.12);
+}
+
+.secondary-action:focus-visible {
+  outline: 3px solid rgba(33, 65, 178, 0.35);
+  outline-offset: 4px;
+}
+
 .brand-identity {
   display: flex;
   gap: 1.5rem;
@@ -446,6 +480,136 @@ button:focus-visible {
   color: var(--fg-muted);
 }
 
+.comparison-lightbox-trigger {
+  margin-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 16px;
+  background: rgba(33, 65, 178, 0.08);
+  color: var(--accent-strong);
+  border: 1px solid rgba(33, 65, 178, 0.18);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.comparison-lightbox-trigger:hover {
+  background: rgba(33, 65, 178, 0.16);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(33, 65, 178, 0.12);
+}
+
+.comparison-lightbox-trigger:focus-visible {
+  outline: 3px solid rgba(33, 65, 178, 0.35);
+  outline-offset: 4px;
+}
+
+.comparison-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.comparison-lightbox[hidden] {
+  display: none;
+}
+
+.comparison-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 12, 28, 0.6);
+  backdrop-filter: blur(10px);
+}
+
+.comparison-lightbox-content {
+  position: relative;
+  z-index: 1;
+  background: var(--panel);
+  border-radius: 28px;
+  border: 1px solid rgba(33, 65, 178, 0.2);
+  box-shadow: 0 36px 90px rgba(12, 20, 48, 0.35);
+  padding: clamp(1.75rem, 3vw, 2.75rem);
+  max-width: 1100px;
+  width: min(96vw, 1100px);
+  display: grid;
+  gap: 1.5rem;
+}
+
+.comparison-lightbox-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.comparison-lightbox-header h3 {
+  font-size: clamp(1.35rem, 1vw + 1rem, 1.8rem);
+}
+
+.comparison-lightbox-close {
+  border: none;
+  background: rgba(33, 65, 178, 0.12);
+  color: var(--accent-strong);
+  padding: 0.6rem 1.2rem;
+  border-radius: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.comparison-lightbox-close:hover {
+  background: rgba(33, 65, 178, 0.2);
+  transform: translateY(-1px);
+}
+
+.comparison-lightbox-close:focus-visible {
+  outline: 3px solid rgba(33, 65, 178, 0.35);
+  outline-offset: 3px;
+}
+
+.comparison-lightbox-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.25rem, 3vw, 2rem);
+  min-height: clamp(320px, 60vh, 580px);
+}
+
+.comparison-lightbox-figure {
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.comparison-lightbox-frame {
+  border-radius: 22px;
+  padding: clamp(1rem, 2vw, 1.75rem);
+  background: white;
+  box-shadow: inset 0 0 0 1px rgba(33, 65, 178, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(240px, 50vh, 520px);
+}
+
+.comparison-lightbox-frame img {
+  width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 14px;
+}
+
+.comparison-lightbox-figure figcaption {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--fg-muted);
+}
+
 .download {
   display: inline-flex;
   align-items: center;
@@ -525,11 +689,24 @@ button:focus-visible {
     width: 100%;
   }
 
+  .secondary-action {
+    justify-content: center;
+    width: 100%;
+  }
+
   .cta-caption {
     max-width: none;
   }
 
   .preview {
     margin-top: 1.5rem;
+  }
+
+  .comparison-lightbox-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .comparison-lightbox {
+    padding: 1.5rem;
   }
 }

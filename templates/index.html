@@ -62,11 +62,12 @@
       <header class="hero">
         <div class="brand-identity">
           <div class="brand-mark">
-            <img
+	     <a href="/">            
+	     <img
               src="{{ url_for('static', filename='images/logo.png') }}"
               alt="Square E-Card Studio logo"
               loading="lazy"
-            />
+            /></a>
           </div>
           <div class="brand-copy">
             <p class="brand-overline">Square E-Card Studio</p>
@@ -86,6 +87,9 @@
           <a id="start-cta" class="primary-action" href="#upload-panel">
             Start using the studio
             <span aria-hidden="true" class="cta-icon">&rarr;</span>
+          </a>
+          <a class="secondary-action" href="https://github.com/phototix/eInk4ColorConverter" target="_blank" rel="noopener">
+            View source on GitHub
           </a>
           <p class="cta-caption">Skip ahead to Select an Image and begin your conversion.</p>
         </div>
@@ -150,6 +154,55 @@
                 <figcaption>Converted</figcaption>
               </figure>
             </div>
+            <button
+              type="button"
+              class="comparison-lightbox-trigger"
+              data-lightbox-open
+              aria-controls="comparison-lightbox"
+            >
+              View full-screen comparison
+            </button>
+            <div
+              class="comparison-lightbox"
+              id="comparison-lightbox"
+              hidden
+              aria-hidden="true"
+            >
+              <div class="comparison-lightbox-backdrop" data-lightbox-close></div>
+              <div
+                class="comparison-lightbox-content"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="comparison-lightbox-title"
+              >
+                <header class="comparison-lightbox-header">
+                  <h3 id="comparison-lightbox-title">Full-screen comparison</h3>
+                  <button type="button" class="comparison-lightbox-close" data-lightbox-close>
+                    Close
+                  </button>
+                </header>
+                <div class="comparison-lightbox-body">
+                  <figure class="comparison-lightbox-figure">
+                    <div class="comparison-lightbox-frame">
+                      <img
+                        src="{{ url_for('uploaded_preview', filename=original_preview) }}"
+                        alt="Original upload preview"
+                      />
+                    </div>
+                    <figcaption>Original</figcaption>
+                  </figure>
+                  <figure class="comparison-lightbox-figure">
+                    <div class="comparison-lightbox-frame">
+                      <img
+                        src="{{ url_for('converted_preview_file', filename=converted_preview) }}"
+                        alt="Converted image preview"
+                      />
+                    </div>
+                    <figcaption>Converted</figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
             {% endif %}
           </div>
           {% endif %}
@@ -197,6 +250,97 @@
       const uploadPanel = document.getElementById("upload-panel");
       const cta = document.getElementById("start-cta");
       const resultPanel = document.getElementById("result-panel");
+      const lightbox = document.getElementById("comparison-lightbox");
+      const lightboxTriggers = document.querySelectorAll("[data-lightbox-open]");
+      const lightboxClosers = document.querySelectorAll("[data-lightbox-close]");
+
+      if (lightbox) {
+        const focusableSelector =
+          "a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex='-1'])";
+        let lastFocusedElement = null;
+
+        const getFocusableElements = () =>
+          Array.from(lightbox.querySelectorAll(focusableSelector)).filter((element) =>
+            !element.hasAttribute("disabled") && element.getAttribute("aria-hidden") !== "true"
+          );
+
+        const openLightbox = () => {
+          if (!lightbox.hidden) {
+            return;
+          }
+
+          lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+          lightbox.hidden = false;
+          lightbox.setAttribute("aria-hidden", "false");
+          document.body.classList.add("lightbox-open");
+
+          window.requestAnimationFrame(() => {
+            const firstElement = getFocusableElements()[0];
+            firstElement?.focus();
+          });
+        };
+
+        const closeLightbox = () => {
+          if (lightbox.hidden) {
+            return;
+          }
+
+          lightbox.hidden = true;
+          lightbox.setAttribute("aria-hidden", "true");
+          document.body.classList.remove("lightbox-open");
+
+          if (lastFocusedElement) {
+            window.requestAnimationFrame(() => {
+              lastFocusedElement?.focus();
+            });
+          }
+        };
+
+        lightboxTriggers.forEach((trigger) => {
+          trigger.addEventListener("click", (event) => {
+            event.preventDefault();
+            openLightbox();
+          });
+        });
+
+        lightboxClosers.forEach((closer) => {
+          closer.addEventListener("click", (event) => {
+            event.preventDefault();
+            closeLightbox();
+          });
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (lightbox.hidden) {
+            return;
+          }
+
+          if (event.key === "Escape") {
+            event.preventDefault();
+            closeLightbox();
+            return;
+          }
+
+          if (event.key === "Tab") {
+            const focusableElements = getFocusableElements();
+            if (focusableElements.length === 0) {
+              event.preventDefault();
+              return;
+            }
+
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+
+            if (event.shiftKey && document.activeElement === firstElement) {
+              event.preventDefault();
+              lastElement.focus();
+            } else if (!event.shiftKey && document.activeElement === lastElement) {
+              event.preventDefault();
+              firstElement.focus();
+            }
+          }
+        });
+      }
 
       cta?.addEventListener("click", (event) => {
         event.preventDefault();
